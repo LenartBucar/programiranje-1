@@ -1,0 +1,1037 @@
+"primeri.ml" 1 0 4 "primeri.ml" 1 0 11
+type(
+  int -> int
+)
+ident(
+  def podvoji "primeri.ml" 5 60 60 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 1 0 12 "primeri.ml" 1 0 13
+type(
+  int
+)
+ident(
+  def x "primeri.ml" 1 0 16 "primeri.ml" 1 0 21
+)
+"primeri.ml" 1 0 16 "primeri.ml" 1 0 17
+type(
+  int
+)
+"primeri.ml" 1 0 18 "primeri.ml" 1 0 19
+type(
+  int -> int -> int
+)
+ident(
+  int_ref Stdlib.( * ) "stdlib.mli" 357 13929 13929 "stdlib.mli" 357 13929 13975
+)
+"primeri.ml" 1 0 20 "primeri.ml" 1 0 21
+type(
+  int
+)
+ident(
+  int_ref x "primeri.ml" 1 0 12 "primeri.ml" 1 0 13
+)
+"primeri.ml" 1 0 16 "primeri.ml" 1 0 21
+type(
+  int
+)
+"primeri.ml" 5 60 64 "primeri.ml" 5 60 89
+type(
+  bool
+)
+ident(
+  def ali_je_tri_vecje_od_stiri "primeri.ml" 7 99 99 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 5 60 92 "primeri.ml" 5 60 93
+type(
+  int
+)
+"primeri.ml" 5 60 94 "primeri.ml" 5 60 95
+type(
+  int -> int -> bool
+)
+ident(
+  int_ref Stdlib.( > ) "stdlib.mli" 140 5875 5875 "stdlib.mli" 140 5875 5925
+)
+"primeri.ml" 5 60 96 "primeri.ml" 5 60 97
+type(
+  int
+)
+"primeri.ml" 5 60 92 "primeri.ml" 5 60 97
+type(
+  bool
+)
+"primeri.ml" 7 99 103 "primeri.ml" 7 99 120
+type(
+  int
+)
+ident(
+  def najboljse_stevilo "primeri.ml" 9 131 131 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 7 99 123 "primeri.ml" 7 99 125
+type(
+  int
+)
+"primeri.ml" 7 99 126 "primeri.ml" 7 99 127
+type(
+  int -> int -> int
+)
+ident(
+  int_ref Stdlib.( + ) "stdlib.mli" 347 13626 13626 "stdlib.mli" 347 13626 13672
+)
+"primeri.ml" 7 99 128 "primeri.ml" 7 99 129
+type(
+  int
+)
+"primeri.ml" 7 99 123 "primeri.ml" 7 99 129
+type(
+  int
+)
+"primeri.ml" 9 131 135 "primeri.ml" 9 131 151
+type(
+  int -> int -> int
+)
+ident(
+  def pomnozi_med_sabo "primeri.ml" 11 165 165 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 9 131 152 "primeri.ml" 9 131 153
+type(
+  int
+)
+ident(
+  def x "primeri.ml" 9 131 154 "primeri.ml" 9 131 163
+)
+"primeri.ml" 9 131 154 "primeri.ml" 9 131 155
+type(
+  int
+)
+ident(
+  def y "primeri.ml" 9 131 158 "primeri.ml" 9 131 163
+)
+"primeri.ml" 9 131 158 "primeri.ml" 9 131 159
+type(
+  int
+)
+ident(
+  int_ref x "primeri.ml" 9 131 152 "primeri.ml" 9 131 153
+)
+"primeri.ml" 9 131 160 "primeri.ml" 9 131 161
+type(
+  int -> int -> int
+)
+ident(
+  int_ref Stdlib.( * ) "stdlib.mli" 357 13929 13929 "stdlib.mli" 357 13929 13975
+)
+"primeri.ml" 9 131 162 "primeri.ml" 9 131 163
+type(
+  int
+)
+ident(
+  int_ref y "primeri.ml" 9 131 154 "primeri.ml" 9 131 155
+)
+"primeri.ml" 9 131 158 "primeri.ml" 9 131 163
+type(
+  int
+)
+"primeri.ml" 11 165 169 "primeri.ml" 11 165 191
+type(
+  (string -> string) -> string
+)
+ident(
+  def uporabi_dvakrat_na_nic "primeri.ml" 13 215 215 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 11 165 192 "primeri.ml" 11 165 193
+type(
+  string -> string
+)
+ident(
+  def f "primeri.ml" 11 165 196 "primeri.ml" 11 165 213
+)
+"primeri.ml" 11 165 196 "primeri.ml" 11 165 197
+type(
+  string -> string
+)
+ident(
+  int_ref f "primeri.ml" 11 165 192 "primeri.ml" 11 165 193
+)
+"primeri.ml" 11 165 198 "primeri.ml" 11 165 203
+type(
+  string
+)
+"primeri.ml" 11 165 196 "primeri.ml" 11 165 203
+type(
+  string
+)
+"primeri.ml" 11 165 204 "primeri.ml" 11 165 205
+type(
+  string -> string -> string
+)
+ident(
+  int_ref Stdlib.( ^ ) "stdlib.mli" 672 25637 25637 "stdlib.mli" 672 25637 25675
+)
+"primeri.ml" 11 165 206 "primeri.ml" 11 165 207
+type(
+  string -> string
+)
+ident(
+  int_ref f "primeri.ml" 11 165 192 "primeri.ml" 11 165 193
+)
+"primeri.ml" 11 165 208 "primeri.ml" 11 165 213
+type(
+  string
+)
+"primeri.ml" 11 165 206 "primeri.ml" 11 165 213
+type(
+  string
+)
+"primeri.ml" 11 165 196 "primeri.ml" 11 165 213
+type(
+  string
+)
+"primeri.ml" 13 215 219 "primeri.ml" 13 215 227
+type(
+  string -> string
+)
+ident(
+  def pozdravi "primeri.ml" 21 472 472 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 13 215 228 "primeri.ml" 13 215 231
+type(
+  string
+)
+ident(
+  def ime "primeri.ml" 14 234 238 "primeri.ml" 19 443 470
+)
+"primeri.ml" 14 234 244 "primeri.ml" 14 234 247
+type(
+  string
+)
+ident(
+  int_ref ime "primeri.ml" 13 215 228 "primeri.ml" 13 215 231
+)
+"primeri.ml" 15 253 259 "primeri.ml" 15 253 267
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 15 253 271 "primeri.ml" 15 253 303
+type(
+  string
+)
+"primeri.ml" 16 305 311 "primeri.ml" 16 305 318
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 16 305 321 "primeri.ml" 16 305 327
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 16 305 311 "primeri.ml" 16 305 327
+type(
+  string
+)
+"primeri.ml" 16 305 331 "primeri.ml" 16 305 363
+type(
+  string
+)
+"primeri.ml" 17 364 370 "primeri.ml" 17 364 372
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 17 364 376 "primeri.ml" 17 364 410
+type(
+  string
+)
+"primeri.ml" 18 411 417 "primeri.ml" 18 411 420
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 18 411 424 "primeri.ml" 18 411 442
+type(
+  string
+)
+"primeri.ml" 19 443 449 "primeri.ml" 19 443 450
+type(
+  string
+)
+type(
+  string
+)
+"primeri.ml" 19 443 454 "primeri.ml" 19 443 464
+type(
+  string
+)
+"primeri.ml" 19 443 465 "primeri.ml" 19 443 466
+type(
+  string -> string -> string
+)
+ident(
+  int_ref Stdlib.( ^ ) "stdlib.mli" 672 25637 25637 "stdlib.mli" 672 25637 25675
+)
+"primeri.ml" 19 443 467 "primeri.ml" 19 443 470
+type(
+  string
+)
+ident(
+  int_ref ime "primeri.ml" 13 215 228 "primeri.ml" 13 215 231
+)
+"primeri.ml" 19 443 454 "primeri.ml" 19 443 470
+type(
+  string
+)
+"primeri.ml" 14 234 238 "primeri.ml" 19 443 470
+type(
+  string
+)
+"primeri.ml" 21 472 476 "primeri.ml" 21 472 498
+type(
+  bool -> bool -> bool -> bool
+)
+ident(
+  def moja_logicna_operacija "primeri.ml" 28 666 666 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 21 472 499 "primeri.ml" 21 472 500
+type(
+  bool
+)
+ident(
+  def x "primeri.ml" 21 472 501 "primeri.ml" 26 629 664
+)
+"primeri.ml" 21 472 501 "primeri.ml" 21 472 502
+type(
+  bool
+)
+ident(
+  def y "primeri.ml" 21 472 503 "primeri.ml" 26 629 664
+)
+"primeri.ml" 21 472 503 "primeri.ml" 21 472 504
+type(
+  bool
+)
+ident(
+  def z "primeri.ml" 22 507 511 "primeri.ml" 26 629 664
+)
+"primeri.ml" 22 507 518 "primeri.ml" 22 507 519
+type(
+  bool
+)
+ident(
+  int_ref x "primeri.ml" 21 472 499 "primeri.ml" 21 472 500
+)
+"primeri.ml" 22 507 521 "primeri.ml" 22 507 522
+type(
+  bool
+)
+ident(
+  int_ref y "primeri.ml" 21 472 501 "primeri.ml" 21 472 502
+)
+"primeri.ml" 22 507 524 "primeri.ml" 22 507 525
+type(
+  bool
+)
+ident(
+  int_ref z "primeri.ml" 21 472 503 "primeri.ml" 21 472 504
+)
+"primeri.ml" 22 507 517 "primeri.ml" 22 507 526
+type(
+  bool * bool * bool
+)
+"primeri.ml" 23 532 539 "primeri.ml" 23 532 543
+type(
+  bool
+)
+"primeri.ml" 23 532 545 "primeri.ml" 23 532 550
+type(
+  bool
+)
+"primeri.ml" 23 532 552 "primeri.ml" 23 532 556
+type(
+  bool
+)
+"primeri.ml" 23 532 538 "primeri.ml" 23 532 557
+type(
+  bool * bool * bool
+)
+type(
+  bool * bool * bool
+)
+"primeri.ml" 23 532 561 "primeri.ml" 23 532 565
+type(
+  bool
+)
+"primeri.ml" 24 566 573 "primeri.ml" 24 566 578
+type(
+  bool
+)
+"primeri.ml" 24 566 580 "primeri.ml" 24 566 585
+type(
+  bool
+)
+ident(
+  def drugi "primeri.ml" 24 566 593 "primeri.ml" 24 566 598
+)
+"primeri.ml" 24 566 587 "primeri.ml" 24 566 588
+type(
+  bool
+)
+"primeri.ml" 24 566 572 "primeri.ml" 24 566 589
+type(
+  bool * bool * bool
+)
+type(
+  bool * bool * bool
+)
+"primeri.ml" 24 566 593 "primeri.ml" 24 566 598
+type(
+  bool
+)
+ident(
+  int_ref drugi "primeri.ml" 24 566 580 "primeri.ml" 24 566 585
+)
+"primeri.ml" 25 599 606 "primeri.ml" 25 599 610
+type(
+  bool
+)
+"primeri.ml" 25 599 612 "primeri.ml" 25 599 616
+type(
+  bool
+)
+"primeri.ml" 25 599 618 "primeri.ml" 25 599 619
+type(
+  bool
+)
+"primeri.ml" 25 599 605 "primeri.ml" 25 599 620
+type(
+  bool * bool * bool
+)
+type(
+  bool * bool * bool
+)
+"primeri.ml" 25 599 624 "primeri.ml" 25 599 628
+type(
+  bool
+)
+"primeri.ml" 26 629 636 "primeri.ml" 26 629 640
+type(
+  bool
+)
+"primeri.ml" 26 629 642 "primeri.ml" 26 629 647
+type(
+  bool
+)
+"primeri.ml" 26 629 649 "primeri.ml" 26 629 654
+type(
+  bool
+)
+"primeri.ml" 26 629 635 "primeri.ml" 26 629 655
+type(
+  bool * bool * bool
+)
+type(
+  bool * bool * bool
+)
+"primeri.ml" 26 629 659 "primeri.ml" 26 629 664
+type(
+  bool
+)
+"primeri.ml" 22 507 511 "primeri.ml" 26 629 664
+type(
+  bool
+)
+"primeri.ml" 28 666 670 "primeri.ml" 28 666 684
+type(
+  bool -> 'a -> bool -> bool
+)
+ident(
+  def gnezdeni_match "primeri.ml" 34 807 807 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 28 666 685 "primeri.ml" 28 666 686
+type(
+  bool
+)
+ident(
+  def x "primeri.ml" 28 666 687 "primeri.ml" 32 780 805
+)
+"primeri.ml" 28 666 687 "primeri.ml" 28 666 688
+type(
+  'a
+)
+ident(
+  def y "primeri.ml" 28 666 689 "primeri.ml" 32 780 805
+)
+"primeri.ml" 28 666 689 "primeri.ml" 28 666 690
+type(
+  bool
+)
+ident(
+  def z "primeri.ml" 29 693 697 "primeri.ml" 32 780 805
+)
+"primeri.ml" 29 693 705 "primeri.ml" 29 693 706
+type(
+  bool
+)
+ident(
+  int_ref x "primeri.ml" 28 666 685 "primeri.ml" 28 666 686
+)
+"primeri.ml" 29 693 708 "primeri.ml" 29 693 709
+type(
+  'a
+)
+ident(
+  int_ref y "primeri.ml" 28 666 687 "primeri.ml" 28 666 688
+)
+"primeri.ml" 29 693 704 "primeri.ml" 29 693 710
+type(
+  bool * 'a
+)
+"primeri.ml" 29 693 712 "primeri.ml" 29 693 713
+type(
+  bool
+)
+ident(
+  int_ref z "primeri.ml" 28 666 689 "primeri.ml" 28 666 690
+)
+"primeri.ml" 29 693 703 "primeri.ml" 29 693 714
+type(
+  (bool * 'a) * bool
+)
+"primeri.ml" 30 720 727 "primeri.ml" 30 720 728
+type(
+  bool * 'a
+)
+"primeri.ml" 30 720 730 "primeri.ml" 30 720 734
+type(
+  bool
+)
+"primeri.ml" 30 720 726 "primeri.ml" 30 720 735
+type(
+  (bool * 'a) * bool
+)
+type(
+  (bool * 'a) * bool
+)
+"primeri.ml" 30 720 739 "primeri.ml" 30 720 743
+type(
+  bool
+)
+"primeri.ml" 31 744 752 "primeri.ml" 31 744 756
+type(
+  bool
+)
+"primeri.ml" 31 744 758 "primeri.ml" 31 744 759
+type(
+  'a
+)
+"primeri.ml" 31 744 751 "primeri.ml" 31 744 760
+type(
+  bool * 'a
+)
+"primeri.ml" 31 744 762 "primeri.ml" 31 744 768
+type(
+  bool
+)
+ident(
+  def tretji "primeri.ml" 31 744 773 "primeri.ml" 31 744 779
+)
+"primeri.ml" 31 744 750 "primeri.ml" 31 744 769
+type(
+  (bool * 'a) * bool
+)
+type(
+  (bool * 'a) * bool
+)
+"primeri.ml" 31 744 773 "primeri.ml" 31 744 779
+type(
+  bool
+)
+ident(
+  int_ref tretji "primeri.ml" 31 744 762 "primeri.ml" 31 744 768
+)
+"primeri.ml" 32 780 787 "primeri.ml" 32 780 788
+type(
+  bool * 'a
+)
+"primeri.ml" 32 780 790 "primeri.ml" 32 780 795
+type(
+  bool
+)
+"primeri.ml" 32 780 786 "primeri.ml" 32 780 796
+type(
+  (bool * 'a) * bool
+)
+type(
+  (bool * 'a) * bool
+)
+"primeri.ml" 32 780 800 "primeri.ml" 32 780 805
+type(
+  bool
+)
+"primeri.ml" 29 693 697 "primeri.ml" 32 780 805
+type(
+  bool
+)
+"primeri.ml" 34 807 811 "primeri.ml" 34 807 827
+type(
+  'a list -> bool
+)
+ident(
+  def je_seznam_prazen "primeri.ml" 39 893 893 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 34 807 828 "primeri.ml" 34 807 831
+type(
+  'a list
+)
+ident(
+  def sez "primeri.ml" 35 834 838 "primeri.ml" 37 870 891
+)
+"primeri.ml" 35 834 844 "primeri.ml" 35 834 847
+type(
+  'a list
+)
+ident(
+  int_ref sez "primeri.ml" 34 807 828 "primeri.ml" 34 807 831
+)
+"primeri.ml" 36 853 859 "primeri.ml" 36 853 861
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 36 853 865 "primeri.ml" 36 853 869
+type(
+  bool
+)
+"primeri.ml" 37 870 876 "primeri.ml" 37 870 877
+type(
+  'a
+)
+"primeri.ml" 37 870 881 "primeri.ml" 37 870 882
+type(
+  'a list
+)
+"primeri.ml" 37 870 876 "primeri.ml" 37 870 882
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 37 870 886 "primeri.ml" 37 870 891
+type(
+  bool
+)
+"primeri.ml" 35 834 838 "primeri.ml" 37 870 891
+type(
+  bool
+)
+"primeri.ml" 39 893 901 "primeri.ml" 39 893 906
+type(
+  int list -> int
+)
+ident(
+  def vsota "primeri.ml" 39 893 893 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 39 893 907 "primeri.ml" 39 893 910
+type(
+  int list
+)
+ident(
+  def sez "primeri.ml" 40 913 917 "primeri.ml" 42 946 985
+)
+"primeri.ml" 40 913 923 "primeri.ml" 40 913 926
+type(
+  int list
+)
+ident(
+  int_ref sez "primeri.ml" 39 893 907 "primeri.ml" 39 893 910
+)
+"primeri.ml" 41 932 938 "primeri.ml" 41 932 940
+type(
+  int list
+)
+type(
+  int list
+)
+"primeri.ml" 41 932 944 "primeri.ml" 41 932 945
+type(
+  int
+)
+"primeri.ml" 42 946 952 "primeri.ml" 42 946 957
+type(
+  int
+)
+ident(
+  def glava "primeri.ml" 42 946 968 "primeri.ml" 42 946 985
+)
+"primeri.ml" 42 946 961 "primeri.ml" 42 946 964
+type(
+  int list
+)
+ident(
+  def rep "primeri.ml" 42 946 968 "primeri.ml" 42 946 985
+)
+"primeri.ml" 42 946 952 "primeri.ml" 42 946 964
+type(
+  int list
+)
+type(
+  int list
+)
+"primeri.ml" 42 946 968 "primeri.ml" 42 946 973
+type(
+  int
+)
+ident(
+  int_ref glava "primeri.ml" 42 946 952 "primeri.ml" 42 946 957
+)
+"primeri.ml" 42 946 974 "primeri.ml" 42 946 975
+type(
+  int -> int -> int
+)
+ident(
+  int_ref Stdlib.( + ) "stdlib.mli" 347 13626 13626 "stdlib.mli" 347 13626 13672
+)
+"primeri.ml" 42 946 976 "primeri.ml" 42 946 981
+type(
+  int list -> int
+)
+ident(
+  int_ref vsota "primeri.ml" 39 893 901 "primeri.ml" 39 893 906
+)
+"primeri.ml" 42 946 982 "primeri.ml" 42 946 985
+type(
+  int list
+)
+ident(
+  int_ref rep "primeri.ml" 42 946 961 "primeri.ml" 42 946 964
+)
+"primeri.ml" 42 946 976 "primeri.ml" 42 946 985
+type(
+  int
+)
+"primeri.ml" 42 946 968 "primeri.ml" 42 946 985
+type(
+  int
+)
+"primeri.ml" 40 913 917 "primeri.ml" 42 946 985
+type(
+  int
+)
+"primeri.ml" 44 987 995 "primeri.ml" 44 987 1002
+type(
+  'a list -> int
+)
+ident(
+  def dolzina "primeri.ml" 44 987 987 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 44 987 1003 "primeri.ml" 44 987 1006
+type(
+  'a list
+)
+ident(
+  def sez "primeri.ml" 45 1009 1013 "primeri.ml" 47 1042 1079
+)
+"primeri.ml" 45 1009 1019 "primeri.ml" 45 1009 1022
+type(
+  'a list
+)
+ident(
+  int_ref sez "primeri.ml" 44 987 1003 "primeri.ml" 44 987 1006
+)
+"primeri.ml" 46 1028 1034 "primeri.ml" 46 1028 1036
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 46 1028 1040 "primeri.ml" 46 1028 1041
+type(
+  int
+)
+"primeri.ml" 47 1042 1048 "primeri.ml" 47 1042 1053
+type(
+  'a
+)
+ident(
+  def glava "primeri.ml" 47 1042 1064 "primeri.ml" 47 1042 1079
+)
+"primeri.ml" 47 1042 1057 "primeri.ml" 47 1042 1060
+type(
+  'a list
+)
+ident(
+  def rep "primeri.ml" 47 1042 1064 "primeri.ml" 47 1042 1079
+)
+"primeri.ml" 47 1042 1048 "primeri.ml" 47 1042 1060
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 47 1042 1064 "primeri.ml" 47 1042 1065
+type(
+  int
+)
+"primeri.ml" 47 1042 1066 "primeri.ml" 47 1042 1067
+type(
+  int -> int -> int
+)
+ident(
+  int_ref Stdlib.( + ) "stdlib.mli" 347 13626 13626 "stdlib.mli" 347 13626 13672
+)
+"primeri.ml" 47 1042 1068 "primeri.ml" 47 1042 1075
+type(
+  'a list -> int
+)
+ident(
+  int_ref dolzina "primeri.ml" 44 987 995 "primeri.ml" 44 987 1002
+)
+"primeri.ml" 47 1042 1076 "primeri.ml" 47 1042 1079
+type(
+  'a list
+)
+ident(
+  int_ref rep "primeri.ml" 47 1042 1057 "primeri.ml" 47 1042 1060
+)
+"primeri.ml" 47 1042 1068 "primeri.ml" 47 1042 1079
+type(
+  int
+)
+"primeri.ml" 47 1042 1064 "primeri.ml" 47 1042 1079
+type(
+  int
+)
+"primeri.ml" 45 1009 1013 "primeri.ml" 47 1042 1079
+type(
+  int
+)
+"primeri.ml" 49 1081 1089 "primeri.ml" 49 1081 1095
+type(
+  'a list -> 'a list -> 'a list
+)
+ident(
+  def stakni "primeri.ml" 49 1081 1081 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 49 1081 1096 "primeri.ml" 49 1081 1100
+type(
+  'a list
+)
+ident(
+  def sez1 "primeri.ml" 49 1081 1101 "primeri.ml" 52 1145 1195
+)
+"primeri.ml" 49 1081 1101 "primeri.ml" 49 1081 1105
+type(
+  'a list
+)
+ident(
+  def sez2 "primeri.ml" 50 1108 1112 "primeri.ml" 52 1145 1195
+)
+"primeri.ml" 50 1108 1118 "primeri.ml" 50 1108 1122
+type(
+  'a list
+)
+ident(
+  int_ref sez1 "primeri.ml" 49 1081 1096 "primeri.ml" 49 1081 1100
+)
+"primeri.ml" 51 1128 1134 "primeri.ml" 51 1128 1136
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 51 1128 1140 "primeri.ml" 51 1128 1144
+type(
+  'a list
+)
+ident(
+  int_ref sez2 "primeri.ml" 49 1081 1101 "primeri.ml" 49 1081 1105
+)
+"primeri.ml" 52 1145 1151 "primeri.ml" 52 1145 1157
+type(
+  'a
+)
+ident(
+  def glava1 "primeri.ml" 52 1145 1169 "primeri.ml" 52 1145 1195
+)
+"primeri.ml" 52 1145 1161 "primeri.ml" 52 1145 1165
+type(
+  'a list
+)
+ident(
+  def rep1 "primeri.ml" 52 1145 1169 "primeri.ml" 52 1145 1195
+)
+"primeri.ml" 52 1145 1151 "primeri.ml" 52 1145 1165
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 52 1145 1169 "primeri.ml" 52 1145 1175
+type(
+  'a
+)
+ident(
+  int_ref glava1 "primeri.ml" 52 1145 1151 "primeri.ml" 52 1145 1157
+)
+"primeri.ml" 52 1145 1179 "primeri.ml" 52 1145 1185
+type(
+  'a list -> 'a list -> 'a list
+)
+ident(
+  int_ref stakni "primeri.ml" 49 1081 1089 "primeri.ml" 49 1081 1095
+)
+"primeri.ml" 52 1145 1186 "primeri.ml" 52 1145 1190
+type(
+  'a list
+)
+ident(
+  int_ref rep1 "primeri.ml" 52 1145 1161 "primeri.ml" 52 1145 1165
+)
+"primeri.ml" 52 1145 1191 "primeri.ml" 52 1145 1195
+type(
+  'a list
+)
+ident(
+  int_ref sez2 "primeri.ml" 49 1081 1101 "primeri.ml" 49 1081 1105
+)
+"primeri.ml" 52 1145 1179 "primeri.ml" 52 1145 1195
+type(
+  'a list
+)
+"primeri.ml" 52 1145 1169 "primeri.ml" 52 1145 1195
+type(
+  'a list
+)
+"primeri.ml" 50 1108 1112 "primeri.ml" 52 1145 1195
+type(
+  'a list
+)
+"primeri.ml" 54 1197 1205 "primeri.ml" 54 1197 1214
+type(
+  ('a -> 'b) -> 'a list -> 'b list
+)
+ident(
+  def preslikaj "primeri.ml" 54 1197 1197 "primeri.ml" 0 0 -1
+)
+"primeri.ml" 54 1197 1215 "primeri.ml" 54 1197 1216
+type(
+  'a -> 'b
+)
+ident(
+  def f "primeri.ml" 54 1197 1217 "primeri.ml" 57 1257 1305
+)
+"primeri.ml" 54 1197 1217 "primeri.ml" 54 1197 1220
+type(
+  'a list
+)
+ident(
+  def sez "primeri.ml" 55 1223 1227 "primeri.ml" 57 1257 1305
+)
+"primeri.ml" 55 1223 1233 "primeri.ml" 55 1223 1236
+type(
+  'a list
+)
+ident(
+  int_ref sez "primeri.ml" 54 1197 1217 "primeri.ml" 54 1197 1220
+)
+"primeri.ml" 56 1242 1248 "primeri.ml" 56 1242 1250
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 56 1242 1254 "primeri.ml" 56 1242 1256
+type(
+  'b list
+)
+"primeri.ml" 57 1257 1263 "primeri.ml" 57 1257 1268
+type(
+  'a
+)
+ident(
+  def glava "primeri.ml" 57 1257 1279 "primeri.ml" 57 1257 1305
+)
+"primeri.ml" 57 1257 1272 "primeri.ml" 57 1257 1275
+type(
+  'a list
+)
+ident(
+  def rep "primeri.ml" 57 1257 1279 "primeri.ml" 57 1257 1305
+)
+"primeri.ml" 57 1257 1263 "primeri.ml" 57 1257 1275
+type(
+  'a list
+)
+type(
+  'a list
+)
+"primeri.ml" 57 1257 1279 "primeri.ml" 57 1257 1280
+type(
+  'a -> 'b
+)
+ident(
+  int_ref f "primeri.ml" 54 1197 1215 "primeri.ml" 54 1197 1216
+)
+"primeri.ml" 57 1257 1281 "primeri.ml" 57 1257 1286
+type(
+  'a
+)
+ident(
+  int_ref glava "primeri.ml" 57 1257 1263 "primeri.ml" 57 1257 1268
+)
+"primeri.ml" 57 1257 1279 "primeri.ml" 57 1257 1286
+type(
+  'b
+)
+"primeri.ml" 57 1257 1290 "primeri.ml" 57 1257 1299
+type(
+  ('a -> 'b) -> 'a list -> 'b list
+)
+ident(
+  int_ref preslikaj "primeri.ml" 54 1197 1205 "primeri.ml" 54 1197 1214
+)
+"primeri.ml" 57 1257 1300 "primeri.ml" 57 1257 1301
+type(
+  'a -> 'b
+)
+ident(
+  int_ref f "primeri.ml" 54 1197 1215 "primeri.ml" 54 1197 1216
+)
+"primeri.ml" 57 1257 1302 "primeri.ml" 57 1257 1305
+type(
+  'a list
+)
+ident(
+  int_ref rep "primeri.ml" 57 1257 1272 "primeri.ml" 57 1257 1275
+)
+"primeri.ml" 57 1257 1290 "primeri.ml" 57 1257 1305
+type(
+  'b list
+)
+"primeri.ml" 57 1257 1279 "primeri.ml" 57 1257 1305
+type(
+  'b list
+)
+"primeri.ml" 55 1223 1227 "primeri.ml" 57 1257 1305
+type(
+  'b list
+)
