@@ -43,22 +43,26 @@ let print_grid string_of_cell grid =
 
 (* Funkcije za dostopanje do elementov mreže *)
 
-let get_row (grid : 'a grid) (row_ind : int) = failwith "TODO"
+let get_row (grid : 'a grid) (row_ind : int) = grid.(row_ind)  (* Returns n-th row *)
 
-let rows grid = failwith "TODO"
+let rows grid = List.init 9 (get_row grid)  (* Returns a list of rows *)
 
-let get_column (grid : 'a grid) (col_ind : int) =
+let get_column (grid : 'a grid) (col_ind : int) =  (* Returns n-th column *)
   Array.init 9 (fun row_ind -> grid.(row_ind).(col_ind))
 
-let columns grid = List.init 9 (get_column grid)
+let columns grid = List.init 9 (get_column grid)  (* Returns a list of columns *)
 
-let get_box (grid : 'a grid) (box_ind : int) = failwith "TODO"
+let get_box (grid : 'a grid) (box_ind : int) =  (* Returns n-th box *)
+  let row pos_ind = (box_ind / 3) * 3 + pos_ind / 3 in
+  let col pos_ind = (box_ind mod 3) * 3 + pos_ind mod 3 in
+  Array.init 9 (fun p -> grid.(row p).(col p))
 
-let boxes grid = failwith "TODO"
+let boxes grid = List.init 9 (get_box grid)  (* Returns a list of boxes *)
 
 (* Funkcije za ustvarjanje novih mrež *)
 
-let map_grid (f : 'a -> 'b) (grid : 'a grid) : 'b grid = failwith "TODO"
+let map_grid (f : 'a -> 'b) (grid : 'a grid) : 'b grid = 
+  Array.init 9 (fun row -> get_row grid row |> Array.map f)
 
 let copy_grid (grid : 'a grid) : 'a grid = map_grid (fun x -> x) grid
 
@@ -97,7 +101,11 @@ let grid_of_string cell_of_char str =
 
 type problem = { initial_grid : int option grid }
 
-let print_problem problem : unit = failwith "TODO"
+let string_of_cell = function
+  | Some c -> string_of_int c
+  | _ -> " "
+
+let print_problem problem : unit = print_grid string_of_cell problem.initial_grid
 
 let problem_of_string str =
   let cell_of_char = function
@@ -111,6 +119,6 @@ let problem_of_string str =
 
 type solution = int grid
 
-let print_solution solution = failwith "TODO"
+let print_solution solution = print_grid string_of_int solution
 
 let is_valid_solution problem solution = failwith "TODO"
