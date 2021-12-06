@@ -24,6 +24,27 @@ let validate_state (state : state) : response =
     let solution = Model.map_grid Option.get state.current_grid in
     if Model.is_valid_solution state.problem solution then Solved solution
     else Fail state
+	
+
+let is_possible_digit cx cy state digit =
+  if Array.mem digit (Model.get_row state.current_grid cx) ||
+     Array.mem digit (Model.get_column state.current_grid cy) ||
+	 Array.mem digit (Model.get_box state.current_grid (cx/3 * 3 + cy/3)) then false else true
+
+
+let rec filter_options cx cy state = function (* reduces options available for a given cell *)
+  | [] -> []
+  | x::t -> if is_possible_digit cx cy state x then x :: (filter_options cx cy state t) else filter_options cx cy state t
+  
+
+let step_cell state cx cy cell = 
+  match state.current_grid.(cx).(cy) with
+  | Some x -> ()
+  | None ->
+	(match filter_options cx cy state (List.init 9 (fun x-> Some (x+1))) with
+	  | x::[] -> state.current_grid.(cx).(cy) <- x
+	  | _ -> () (* TODO *))
+	
 
 let branch_state (state : state) : (state * state) option =
   (* TODO: Pripravite funkcijo, ki v trenutnem stanju poišče hipotezo, glede katere
@@ -36,6 +57,7 @@ let branch_state (state : state) : (state * state) option =
 (* pogledamo, če trenutno stanje vodi do rešitve *)
 let rec solve_state (state : state) =
   (* uveljavimo trenutne omejitve in pogledamo, kam smo prišli *)
+  ignore (Model.mapi_grid (step_cell state) state.current_grid);
   (* TODO: na tej točki je stanje smiselno počistiti in zožiti možne rešitve *)
   match validate_state state with
   | Solved solution ->

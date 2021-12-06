@@ -63,6 +63,9 @@ let boxes grid = List.init 9 (get_box grid)  (* Returns a list of boxes *)
 
 let map_grid (f : 'a -> 'b) (grid : 'a grid) : 'b grid = 
   Array.init 9 (fun row -> get_row grid row |> Array.map f)
+  
+let mapi_grid (f : int -> int -> 'a -> 'b) (grid : 'a grid) : 'b grid = 
+  Array.init 9 (fun row -> get_row grid row |> Array.mapi (f row))
 
 let copy_grid (grid : 'a grid) : 'a grid = map_grid (fun x -> x) grid
 
@@ -117,8 +120,16 @@ let problem_of_string str =
 
 (* Model za izhodne rešitve *)
 
+let check_unique arr =
+  let solved = Array.init 9 (fun x -> x+1) in
+  Array.for_all (fun x -> Array.mem x solved) arr
+
 type solution = int grid
 
 let print_solution solution = print_grid string_of_int solution
 
-let is_valid_solution problem solution = failwith "TODO"
+let is_valid_solution problem solution = 
+  List.for_all check_unique (rows solution) &&
+  List.for_all check_unique (columns solution) &&
+  List.for_all check_unique (boxes solution)
+  
