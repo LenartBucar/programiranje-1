@@ -6,6 +6,9 @@
  poddrevesi. Na tej točki ne predpostavljamo ničesar drugega o obliki dreves.
 [*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*)
 
+type 'a tree =
+  | Empty
+  | Composite of 'a tree * 'a * 'a tree
 
 (*----------------------------------------------------------------------------*]
  Definirajmo si testni primer za preizkušanje funkcij v nadaljevanju. Testni
@@ -17,6 +20,24 @@
        /   / \
       0   6   11
 [*----------------------------------------------------------------------------*)
+
+let leaf x =
+  Composite (Empty, x, Empty)
+  
+let test_tree = 
+  Composite (
+    Composite (
+	  leaf 0,
+	  2,
+	  Empty
+	),
+	5,
+	Composite (
+	  leaf 6,
+	  7,
+	  leaf 11
+	)
+  )
 
 
 (*----------------------------------------------------------------------------*]
@@ -34,6 +55,11 @@
 [*----------------------------------------------------------------------------*)
 
 
+let rec mirror = function
+  | Empty -> Empty
+  | Composite (l, n, r) -> Composite (mirror r, n, mirror l)
+
+
 (*----------------------------------------------------------------------------*]
  Funkcija [height] vrne višino oz. globino drevesa, funkcija [size] pa število
  vseh vozlišč drevesa.
@@ -43,6 +69,15 @@
  # size test_tree;;
  - : int = 6
 [*----------------------------------------------------------------------------*)
+
+
+let rec height = function
+  | Empty -> 0
+  | Composite (a, _, b) -> 1 + max (height a) (height b)
+  
+let rec size = function
+  | Empty -> 0
+  | Composite (a, _, b) -> 1 + size a + size b
 
 
 (*----------------------------------------------------------------------------*]
@@ -56,6 +91,11 @@
 [*----------------------------------------------------------------------------*)
 
 
+let rec map_tree f = function
+  | Empty -> Empty
+  | Composite (a, n, b) -> Composite (map_tree f a, f n, map_tree f b)
+
+
 (*----------------------------------------------------------------------------*]
  Funkcija [list_of_tree] pretvori drevo v seznam. Vrstni red podatkov v seznamu
  naj bo takšen, da v primeru binarnega iskalnega drevesa vrne urejen seznam.
@@ -63,6 +103,11 @@
  # list_of_tree test_tree;;
  - : int list = [0; 2; 5; 6; 7; 11]
 [*----------------------------------------------------------------------------*)
+
+
+let rec list_of_tree = function
+  | Empty -> []
+  | Composite (a, n, b) -> list_of_tree a @ [n] @ list_of_tree b
 
 
 (*----------------------------------------------------------------------------*]
@@ -75,6 +120,11 @@
  # test_tree |> mirror |> is_bst;;
  - : bool = false
 [*----------------------------------------------------------------------------*)
+
+
+let is_bst tree =
+  let lst = list_of_tree tree in
+  lst = List.sort Int.compare lst
 
 
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
@@ -90,6 +140,19 @@
  # member 3 test_tree;;
  - : bool = false
 [*----------------------------------------------------------------------------*)
+
+let rec insert element = function
+  | Empty -> leaf element
+  | Composite (l, n, r) when n = element -> Composite (l, n, r)
+  | Composite (l, n, r) when n > element -> Composite (insert element l, n, r)
+  | Composite (l, n, r) when n < element -> Composite (l, n, insert element r)
+  
+
+let rec member element = function
+  | Empty -> false
+  | Composite (l, n, r) when n = element -> true
+  | Composite (l, n, r) when n > element -> member element l
+  | Composite (l, n, r) when n < element -> member element r
 
 
 (*----------------------------------------------------------------------------*]
