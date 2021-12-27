@@ -25,6 +25,13 @@ let find_and_display_solution (problem : Model.problem) =
   display_solution response;
   Printf.printf "Čas reševanja: %f s.\n%!" elapsed_time
 
+let find_solutions (problems : Model.problem list) =
+  let before = Sys.time () in
+  let _ = List.iter (fun x -> ignore (Solver.solve_problem x)) problems in
+  let after = Sys.time () in
+  let elapsed_time = after -. before in
+  Printf.printf "Čas reševanja: %f s.\n%!" elapsed_time
+
 let () =
   (* Če se program sesuje, nam to izpiše klicni sklad. *)
   Printexc.record_backtrace true;
@@ -37,7 +44,8 @@ let () =
   (* Iz vsake datoteke preberemo problem *)
   |> List.map read_problem
   (* Probleme zaporedoma rešimo *)
-  |> List.iter find_and_display_solution
+  (* |> List.iter find_and_display_solution *)  (* Solve each sudoku individually *)
+  |> find_solutions  (* Solve and time all sudokus at once *)
 
 (* Če domačo nalogo rešujete prek spletnega vmesnika, ki ne podpira branja datotek,
    lahko delovanje preizkušate prek spodnjega programa. *)

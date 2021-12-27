@@ -133,3 +133,11 @@ let is_valid_solution problem solution =
   List.for_all check_unique (columns solution) &&
   List.for_all check_unique (boxes solution)
   
+  
+let rec unoption (data : 'a option list) : 'a list =
+  match data with
+  | [] -> []
+  | h::t -> (match h with
+			 | Some x -> x :: unoption t
+			 | None -> unoption t
+			)
