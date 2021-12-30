@@ -29,6 +29,9 @@ let string_of_row string_of_cell row =
   in
   "┃" ^ string_of_cells ^ "┃\n"
 
+let int_of_char c =
+  Char.code c - Char.code '0'
+
 let print_grid string_of_cell grid =
   let ln = "───" in
   let big = "━━━" in
@@ -102,13 +105,65 @@ let grid_of_string cell_of_char str =
 
 (* Model za vhodne probleme *)
 
-type problem = { initial_grid : int option grid }
+type constr = {constr_type : string; value : int; cells : (int * int) list}
+
+type problem = { initial_grid : int option grid; constraints : constr list }
 
 let string_of_cell = function
   | Some c -> string_of_int c
   | _ -> " "
 
+let rec split_list l = function
+  | 0 -> [], l
+  | n -> match l with
+		 | h :: t -> let f, s = split_list t (n-1) in h::f, s
+		 | [] -> [], []
+
+let split_inp str = 
+  let grid, cons = split_list (String.split_on_char '\n' str) 13 in
+  let grid = String.concat "\n" grid in
+  match cons with
+  | [] -> grid, []
+  | h :: t -> grid, t
+  
+
 let print_problem problem : unit = print_grid string_of_cell problem.initial_grid
+
+let make_cells cells =
+  let cells = String.split_on_char ';' cells in
+  List.map (fun x -> int_of_char x.[1], int_of_char x.[3]) cells
+
+(* VVVV CONSTRAINT PARSERS VVVV *)
+
+let[@warning "-8"] make_cage c =
+  let [v; cells] = (String.split_on_char ' ' c) in
+  let v = int_of_string v in
+  let cells = make_cells cells in
+  {constr_type = "K"; value = v; cells = cells}
+  
+let make_arrow c =
+  let s = make_cells (String.sub c 0 5) in
+  let cells = make_cells (String.sub c 9 (String.length c - 9)) in
+  {constr_type = "A"; value = (-1); cells = s@cells}
+  
+let make_thermo c =
+  let cells = make_cells c in
+  {constr_type = "T"; value = (-1); cells = cells}
+
+(* ^^^^ CONSTRAINT PARSERS ^^^^ *)
+
+let parse_constraint constr =
+  let t = constr.[0] and
+	  c = String.sub constr 3 (String.length constr - 3)
+  in
+  match t with
+  | 'K' -> make_cage c
+  | 'A' -> make_arrow c
+  | 'T' -> make_thermo c
+  | _ -> failwith "Unknown constraint"
+
+let parse_constraints constraints =
+  List.map parse_constraint (List.filter (fun x -> x.[0] <> '#') constraints)
 
 let problem_of_string str =
   let cell_of_char = function
@@ -116,7 +171,8 @@ let problem_of_string str =
     | c when '1' <= c && c <= '9' -> Some (Some (Char.code c - Char.code '0'))
     | _ -> None
   in
-  { initial_grid = grid_of_string cell_of_char str }
+  let grid_str, constraint_str = split_inp str in
+  { initial_grid = grid_of_string cell_of_char grid_str; constraints = parse_constraints constraint_str }
 
 (* Model za izhodne rešitve *)
 
@@ -128,10 +184,44 @@ type solution = int grid
 
 let print_solution solution = print_grid string_of_int solution
 
-let is_valid_solution problem solution = 
+let rec duplicates = function
+  | [] -> false
+  | hd::tl -> List.mem hd tl || duplicates tl
+
+let validate_cage soln constr = 
+  let values = List.map (fun (x, y) -> soln.(x).(y)) constr.cells in
+  (* Printf.printf "Validating cage with value %d\n" constr.value; *)
+  (* List.iter (Printf.printf "%d-") values; *)
+  (* Printf.printf "\n"; *)
+  let sum = (List.fold_left (+) 0 values) in
+  (* Printf.printf "Sum of digits is %d\n" sum; *)
+  let dupes = duplicates values in
+  (sum = constr.value) && not dupes
+  
+  
+let[@warning "-8"] validate_arrow soln constr = 
+  let head::tail = List.map (fun (x, y) -> soln.(x).(y)) constr.cells in
+  head = (List.fold_left (+) 0 tail)
+  
+let validate_thermo soln constr = 
+  let rec validate (soln : int grid) = function
+    | h::s::t -> soln.(fst h).(snd h) < soln.(fst s).(snd s) && validate soln (s::t)
+	| _ -> true
+  in
+  validate soln constr.cells
+  
+let validate_constraint soln constr =
+  match constr.constr_type with
+  | "K" -> validate_cage soln constr
+  | "A" -> validate_arrow soln constr
+  | "T" -> validate_thermo soln constr
+  | _ -> failwith "Unknown constraint"
+
+let is_valid_solution problem solution = (* TODO: Validate constraints *)
   List.for_all check_unique (rows solution) &&
   List.for_all check_unique (columns solution) &&
-  List.for_all check_unique (boxes solution)
+  List.for_all check_unique (boxes solution) &&
+  List.for_all (validate_constraint solution) problem.constraints
   
   
 let rec unoption (data : 'a option list) : 'a list =
