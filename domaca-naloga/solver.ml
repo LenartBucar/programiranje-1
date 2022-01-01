@@ -96,6 +96,50 @@ let clean_tuples (options : available list) =
 
 (* ^^^^ n-tuple check ^^^^ *)
 
+(* VVVV pointing pairs check VVVV *)
+
+
+(* 
+
+if X in a row can only be in one box, remove from elsewhere in box
+if X in a col can only be in one box, remove from elsewhere in box
+if X in a box can only be in one row, remove from elsewhere in row
+if X in a box can only be in one col, remove from elsewhere in col
+
+*)
+
+(* ^^^^ pointing pairs check ^^^^ *)
+
+(* VVVV hidden singles check VVVV *)
+
+let find_hidden_single digit opts =
+  let contains, not_contains = List.partition (fun x -> List.mem digit x.possible) opts in
+  if List.length contains <> 1 then opts else
+  let[@warning "-8"] [contains] = contains in
+  [remove_candidates (List.filter ((<>) digit) (List.init 9 (fun x -> Some (x+1)))) contains] @ not_contains
+
+let find_hidden_singles_unit unit_fun state digit =
+  {state with options = List.concat_map (find_hidden_single digit) (unit_fun state.options)}
+  
+let find_hidden_singles state =
+  List.fold_left 
+    (fun st func -> 
+	  List.fold_left 
+	    (find_hidden_singles_unit 
+		  func 
+		)
+		st 
+		(List.init 9 (fun x -> Some (x+1)))
+	)
+	state 
+	[opt_rows; opt_boxes; opt_columns]
+	
+	(*
+    List.fold_left (fun st func -> List.fold_left (find_hidden_singles_unit func ) st (List.init 9 (fun x -> Some (x+1)))) state [opt_rows; opt_boxes; opt_columns]
+	*)
+
+(* ^^^^ hidden singles check ^^^^ *)
+
 (* VVVV Innie / Outie check VVVV *)
 
 let get_cages_row (constraints : Model.constr list) row =
@@ -423,6 +467,7 @@ let rec solve_state (state : state) =
   if pass = None then None else
 
   let state = filter_state state in
+  let state = find_hidden_singles state in
   let state = {state with options = clean_tuples state.options} in
   (* let state = fix_pokies state in *)
   (* print_state state; *)

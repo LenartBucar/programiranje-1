@@ -44,8 +44,8 @@ let () =
   (* Iz vsake datoteke preberemo problem *)
   |> List.map read_problem
   (* Probleme zaporedoma rešimo *)
-  |> List.iter find_and_display_solution  (* Solve each sudoku individually *)
-  (* |> find_solutions *) (* Solve and time all sudokus at once *)
+  (* |> List.iter find_and_display_solution *)  (* Solve each sudoku individually *)
+  |> find_solutions (* Solve and time all sudokus at once *)
 
 (* Če domačo nalogo rešujete prek spletnega vmesnika, ki ne podpira branja datotek,
    lahko delovanje preizkušate prek spodnjega programa. *)
