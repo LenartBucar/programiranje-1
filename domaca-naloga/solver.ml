@@ -99,6 +99,64 @@ let clean_tuples (options : available list) =
 (* VVVV pointing pairs check VVVV *)
 
 
+let find_pointing_pair_box_r digit opts = (* if X in a box can only be in one row, remove from elsewhere in row *)
+  let contains, not_contains = List.partition (fun x -> List.mem digit x.possible) opts in
+  if contains = [] then None else
+  let rows = List.map (fun x -> fst x.loc) contains in
+  let align_row = List.for_all ((=) (List.hd rows)) rows in
+  if not align_row then None else
+  Some ((List.hd rows), List.map (fun x -> snd x.loc) contains)  (* return row to clean, and columns of exceptions *)
+  
+let clean_pps_row digit data options =
+  match data with
+  | None -> options
+  | Some (row, exceptions) ->
+  let clean, leave = List.partition (fun opt -> (fst opt.loc) = row && not (List.mem (snd opt.loc) exceptions) ) options in
+  let cleaned = List.map (remove_candidates [digit]) clean in
+  cleaned @ leave
+  
+let find_pointing_pair_box_c digit opts = (* if X in a box can only be in one col, remove from elsewhere in col *)
+  let contains, not_contains = List.partition (fun x -> List.mem digit x.possible) opts in
+  if contains = [] then None else
+  let cols = List.map (fun x -> snd x.loc) contains in
+  let align_col = List.for_all ((=) (List.hd cols)) cols in
+  if not align_col then None else
+  Some ((List.hd cols), List.map (fun x -> fst x.loc) contains)  (* return col to clean, and rows of exceptions *)
+  
+let clean_pps_col digit data options =
+  match data with
+  | None -> options
+  | Some (col, exceptions) ->
+  let clean, leave = List.partition (fun opt -> (snd opt.loc) = col && not (List.mem (fst opt.loc) exceptions) ) options in
+  let cleaned = List.map (remove_candidates [digit]) clean in
+  cleaned @ leave
+  
+let clean_pps state =
+  let options = state.options in
+  let options = 
+    List.fold_left
+      (fun opts digit ->
+        List.fold_left 
+          (fun opt box -> clean_pps_row digit (find_pointing_pair_box_r digit box) opt) 
+	      opts 
+	      (opt_boxes opts)
+      )
+	  options
+	  (List.init 9 (fun x -> Some (x+1)))
+  in
+  let options = 
+    List.fold_left
+      (fun opts digit ->
+        List.fold_left 
+          (fun opt box -> clean_pps_col digit (find_pointing_pair_box_c digit box) opt) 
+          opts 
+	      (opt_columns opts)
+      )
+	  options
+	  (List.init 9 (fun x -> Some (x+1)))
+  in
+  {state with options = options}
+
 (* 
 
 if X in a row can only be in one box, remove from elsewhere in box
@@ -469,6 +527,7 @@ let rec solve_state (state : state) =
   let state = filter_state state in
   let state = find_hidden_singles state in
   let state = {state with options = clean_tuples state.options} in
+  (* let state = clean_pps state in *) (* SLOWS DOWN ON AVERAGE *)
   (* let state = fix_pokies state in *)
   (* print_state state; *)
   (* TODO: na tej točki je stanje smiselno počistiti in zožiti možne rešitve *)

@@ -17,4 +17,4 @@ def repeat(command, num):
 if __name__ == "__main__":
     # sudoku = r"sudokuji\newman\whats_in_the_box.sdk"
     sudoku = r"sudokuji\obicajni-*.sdk"
-    print(repeat(["sudoku.exe", sudoku], 100))
+    print(repeat(["sudoku.exe", sudoku], 10))
