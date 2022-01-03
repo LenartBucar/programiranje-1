@@ -38,6 +38,13 @@ let rec find_pos n el = function
   | h::t when h = el -> n
   | _::t -> find_pos (n+1) el t
 
+let take n lst = 
+  let rec take' n lst acc =
+    match n with 
+	| 0 -> List.rev acc
+    | _ -> take' (n-1) (List.tl lst) (List.hd lst :: acc)
+  in take' n lst []
+
 let get_digits grid (constr : Model.constr) =
   Model.unoption (List.map (fun (x, y) -> grid.(x).(y)) constr.cells)
   
@@ -45,6 +52,13 @@ let get_constr_options state (constr : Model.constr) =
   List.map 
     (fun o -> Model.unoption o.possible) 
 	(List.filter (fun c -> (List.mem c.loc constr.cells) && state.current_grid.(fst c.loc).(snd c.loc) = None) state.options)
+
+let all_digits = List.init 9 (fun x -> Some (x+1))
+
+let max a b = if a > b then a else b
+let min a b = if a < b then a else b
+let sum = List.fold_left (+) 0
+
 
 (* VVVV Get units of options VVVV *)
 
@@ -81,24 +95,28 @@ let find_tuple (options : available list) opt =
   let same, diff = List.partition (fun x -> x.possible = opt.possible) options in
   if List.length same = List.length opt.possible then
     let diff = List.map (remove_candidates opt.possible) diff in
-    same @ diff
+  same @ diff
   else
   options
 
 let filter_tuples (options : available list) =
   List.fold_left find_tuple options options
 
-let clean_tuples (options : available list) =
-  let options = List.concat_map filter_tuples (opt_rows options) in
+(* let clean_tuples_old (options : available list) =
+  List.fold_left (fun opt func -> List.concat_map filter_tuples (func opt)) options [opt_rows; opt_columns; opt_boxes]
+  (* let options = List.concat_map filter_tuples (opt_rows options) in
   let options = List.concat_map filter_tuples (opt_columns options) in
   let options = List.concat_map filter_tuples (opt_boxes options) in
-  options
+  options *) *)
+
+let clean_tuples state =
+  {state with options = List.fold_left (fun opt func -> List.concat_map filter_tuples (func opt)) state.options [opt_rows; opt_columns; opt_boxes]}
 
 (* ^^^^ n-tuple check ^^^^ *)
 
 (* VVVV pointing pairs check VVVV *)
 
-
+(* ---------------- UNUSED VVVV
 let find_pointing_pair_box_r digit opts = (* if X in a box can only be in one row, remove from elsewhere in row *)
   let contains, not_contains = List.partition (fun x -> List.mem digit x.possible) opts in
   if contains = [] then None else
@@ -142,7 +160,7 @@ let clean_pps state =
 	      (opt_boxes opts)
       )
 	  options
-	  (List.init 9 (fun x -> Some (x+1)))
+	  (generate_digits 9)
   in
   let options = 
     List.fold_left
@@ -153,10 +171,10 @@ let clean_pps state =
 	      (opt_columns opts)
       )
 	  options
-	  (List.init 9 (fun x -> Some (x+1)))
+	  (generate_digits 9)
   in
   {state with options = options}
-
+---------------- UNUSED ^^^^ *)
 (* 
 
 if X in a row can only be in one box, remove from elsewhere in box
@@ -174,7 +192,7 @@ let find_hidden_single digit opts =
   let contains, not_contains = List.partition (fun x -> List.mem digit x.possible) opts in
   if List.length contains <> 1 then opts else
   let[@warning "-8"] [contains] = contains in
-  [remove_candidates (List.filter ((<>) digit) (List.init 9 (fun x -> Some (x+1)))) contains] @ not_contains
+  [remove_candidates (List.filter ((<>) digit) all_digits) contains] @ not_contains
 
 let find_hidden_singles_unit unit_fun state digit =
   {state with options = List.concat_map (find_hidden_single digit) (unit_fun state.options)}
@@ -187,7 +205,7 @@ let find_hidden_singles state =
 		  func 
 		)
 		st 
-		(List.init 9 (fun x -> Some (x+1)))
+		all_digits
 	)
 	state 
 	[opt_rows; opt_boxes; opt_columns]
@@ -199,7 +217,7 @@ let find_hidden_singles state =
 (* ^^^^ hidden singles check ^^^^ *)
 
 (* VVVV Innie / Outie check VVVV *)
-
+(* ---------------- UNUSED VVVV
 let get_cages_row (constraints : Model.constr list) row =
   List.filter ( fun (x : Model.constr) ->
     (List.mem row (List.map fst x.cells)) && x.constr_type = "K"
@@ -301,7 +319,7 @@ let fix_pokies_cols state =
 
 
 let fix_pokies state = fix_pokies_cols (fix_pokies_rows state)
-
+---------------- UNUSED ^^^^ *)
 (* ^^^^ Innie / Outie check ^^^^ *)
 
 (* VVVV Arrow check VVVV *)
@@ -310,11 +328,11 @@ let check_arrow_head state (arrow : Model.constr) digit =
   let[@warning "-8"] head::tail = arrow.cells in
   let options = get_constr_options state {arrow with cells = tail} in
   let fixed = get_digits state.current_grid {arrow with cells = tail} in
-  let fixed_sum = List.fold_left (+) 0 fixed in
-  let min_opt = List.map (fun lst -> List.fold_left (fun a b -> if a < b then a else b) (List.hd lst) lst) options in
-  let max_opt = List.map (fun lst -> List.fold_left (fun a b -> if a > b then a else b) (List.hd lst) lst) options in
-  let min_sum = List.fold_left (+) 0 min_opt in
-  let max_sum = List.fold_left (+) 0 max_opt in
+  let fixed_sum = sum fixed in
+  let min_opt = List.map (fun lst -> List.fold_left min (List.hd lst) lst) options in
+  let max_opt = List.map (fun lst -> List.fold_left max (List.hd lst) lst) options in
+  let min_sum = sum min_opt in
+  let max_sum = sum max_opt in
   fixed_sum + min_sum <= Option.get digit && Option.get digit <= fixed_sum + max_sum
   (* fixed_sum + (List.length tail - List.length fixed) <= Option.get digit *)
   
@@ -324,22 +342,35 @@ let check_arrow_tail state (arrow : Model.constr) loc digit =
   | Some x -> x
   | None -> let[@warning "-8"] [opts] = (List.filter (fun o -> o.loc = head) state.options) in
 			let opts = Model.unoption opts.possible in 
-			List.fold_left (fun a b -> if a > b then a else b) (List.hd opts) opts
+			List.fold_left max (List.hd opts) opts
   in
-  h >= Option.get digit + List.length tail - 1
+  let fixed = get_digits state.current_grid {arrow with cells = tail} in
+  let fixed_sum = sum fixed in
+  h >= Option.get digit + fixed_sum + (List.length tail - List.length fixed) - 1
 
 
 let check_arrow state (arrow : Model.constr) =
   if arrow.constr_type <> "A" then true else
   let[@warning "-8"] head::tail = arrow.cells in
   let tail_digits = get_digits state.current_grid {arrow with cells = tail} in
-  let tail_sum = (List.fold_left (+) 0 tail_digits) in
+  let tail_sum = (sum tail_digits) in
   match state.current_grid.(fst head).(snd head) with
   | None -> tail_sum <= 9
   | Some x -> if List.length tail = List.length tail_digits then tail_sum = x else tail_sum < x
   
 
 (* ^^^^ Arrow check ^^^^ *)
+
+(* VVVV Thermo check VVVV *)
+
+let rec get_extreme delta = function
+  | (Some a)::(Some b)::t -> get_extreme delta ((Some b)::t)
+  | (Some a)::None::t -> get_extreme delta ((Some (a + delta))::t)
+  | None::t -> get_extreme delta ((Some (if delta = (-1) then 9 else 1))::t)
+  | (Some x)::[] -> x
+  | [] -> failwith "Empty thermo?!?"
+
+(* ^^^^ Thermo check ^^^^ *)
 
 (* VVVV Constraint filtering VVVV *)
 
@@ -384,7 +415,7 @@ let is_possible_cage cx cy state (constr : Model.constr) digit = (* make cages w
   let below_max = (constr.value - triangular num) >= Option.get digit in
   let already_filled = get_digits state.current_grid constr in
   if List.length already_filled = num then 
-    (Option.get digit = constr.value - (List.fold_left (+) 0 already_filled))
+    (Option.get digit = constr.value - (sum already_filled))
   else
   let already_in_cage = List.mem (Option.get digit) already_filled in
   let options = precompute_cage (num+1, constr.value) in
@@ -399,7 +430,15 @@ let[@warning "-8"] is_possible_arrow cx cy state (constr : Model.constr) digit =
 let is_possible_thermo cx cy state (constr : Model.constr) digit =
   if not (List.mem (cx, cy) constr.cells) then true else
   let pos = find_pos 1 (cx, cy) constr.cells in
-  pos <= Option.get digit && Option.get digit <= (9 - (List.length constr.cells - pos))
+  let digits = List.map (fun (x, y) -> state.current_grid.(x).(y)) constr.cells in
+  let below = take pos digits and
+      above = take (List.length digits - pos + 1) (List.rev digits) in
+  let low = get_extreme 1 below in
+  let high = get_extreme (-1) above in
+  low <= Option.get digit && Option.get digit <= high
+  (* pos <= Option.get digit && Option.get digit <= (9 - (List.length constr.cells - pos)) *)
+
+(* ------------------------ *)
 
 let is_possible_constr cx cy state (constr : Model.constr) digit =
   match constr.constr_type with
@@ -408,7 +447,7 @@ let is_possible_constr cx cy state (constr : Model.constr) digit =
   | "T" -> is_possible_thermo cx cy state constr digit
   | _ -> failwith "Unknown constraint"
 
-(* ^^^^ Get units of options ^^^^ *)
+(* ^^^^ Constraint filtering ^^^^ *)
 
 let is_possible_digit cx cy state (constraints : Model.constr list) digit = (* TODO: restrict constraints *)
   if Array.mem digit (Model.get_row state.current_grid cx) ||
@@ -428,7 +467,7 @@ let get_options grid (constraints : Model.constr list) =
 	List.init 9 (fun y -> 
 	  match grid.(x).(y) with
 	  | Some x -> None
-	  | None -> Some {loc = (x, y); possible = (List.init 9 (fun x-> Some (x+1)))}
+	  | None -> Some {loc = (x, y); possible = all_digits}
 	)
   )))
 
@@ -524,9 +563,14 @@ let rec solve_state (state : state) =
   in
   if pass = None then None else
 
-  let state = filter_state state in
+  (* let state = filter_state state in
   let state = find_hidden_singles state in
-  let state = {state with options = clean_tuples state.options} in
+  let state = clean_tuples state in *)
+  let state = state 
+    |> filter_state 
+	|> find_hidden_singles 
+	|> clean_tuples 
+  in
   (* let state = clean_pps state in *) (* SLOWS DOWN ON AVERAGE *)
   (* let state = fix_pokies state in *)
   (* print_state state; *)

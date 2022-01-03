@@ -12,9 +12,13 @@ def time(command):
     
 
 def repeat(command, num):
-    return sum(get_time(time(command)) for _ in range(num)) / num
+    times = [get_time(time(command)) for _ in range(num)]
+    return sum(times) / num, min(times), max(times)
 
 if __name__ == "__main__":
     # sudoku = r"sudokuji\newman\whats_in_the_box.sdk"
-    sudoku = r"sudokuji\obicajni-*.sdk"
-    print(repeat(["sudoku.exe", sudoku], 10))
+    # sudoku = r"sudokuji\obicajni-*.sdk"
+    # sudokus = [r"sudokuji\horjak\obicajni-*.sdk", r"sudokuji\horjak\puscice-*.sdk", r"sudokuji\horjak\termometri-*.sdk", r"sudokuji\horjak\*.sdk"]
+    sudokus = [r"sudokuji\horjak\puscice-*.sdk"]
+    for sudoku in sudokus:
+        print(sudoku, repeat(["sudoku.exe", sudoku], 100))

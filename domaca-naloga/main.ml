@@ -1,5 +1,5 @@
 let read_problem filename =
-  let channel = open_in filename in
+  let channel = open_in_bin filename in
   let str = really_input_string channel (in_channel_length channel) in
   close_in channel;
   Model.problem_of_string str
@@ -44,7 +44,7 @@ let () =
   (* Iz vsake datoteke preberemo problem *)
   |> List.map read_problem
   (* Probleme zaporedoma rešimo *)
-  (* |> List.iter find_and_display_solution *)  (* Solve each sudoku individually *)
+  (* |> List.iter find_and_display_solution *) (* Solve each sudoku individually *)
   |> find_solutions (* Solve and time all sudokus at once *)
 
 (* Če domačo nalogo rešujete prek spletnega vmesnika, ki ne podpira branja datotek,

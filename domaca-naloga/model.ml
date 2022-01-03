@@ -163,7 +163,7 @@ let parse_constraint constr =
   | _ -> failwith "Unknown constraint"
 
 let parse_constraints constraints =
-  List.map parse_constraint (List.filter (fun x -> x.[0] <> '#') constraints)
+  List.map parse_constraint (List.filter (fun x -> String.length x > 0 && x.[0] <> '#') constraints)
 
 let problem_of_string str =
   let cell_of_char = function
