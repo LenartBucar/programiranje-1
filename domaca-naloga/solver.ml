@@ -5,6 +5,22 @@ exception No_Options
    želeli imeti še kakšno dodatno informacijo *)
 type state = { problem : Model.problem; current_grid : int option Model.grid; options : available list}
 
+let debug_cell = (0,2)
+let dbs = "0,2"
+let debug_digit = 7
+
+(* VVVV DIGEST VVVV *)
+
+let digest_state state =
+ (Array.fold_left (fun acc s -> acc ^ s) "" (Array.map (fun x ->
+    Array.fold_left (fun acc s -> acc ^ s) "" (Array.map (function
+	  | None -> " "
+	  | Some t -> string_of_int t
+	) x)
+  ) state.current_grid)) |> Digest.string |> Digest.to_hex
+
+(* ^^^^ DIGEST ^^^^ *)
+
 let print_available available =
   Printf.printf "(%d,%d) - " (fst available.loc) (snd available.loc);
   List.iter (fun x -> Printf.printf "%d " (Option.get x)) available.possible;
@@ -16,6 +32,7 @@ let print_constraint (constr : Model.constr) =
   Printf.printf "\n"
 
 let print_state (state : state) : unit =
+  Printf.printf "%s\n" (digest_state state);
   Model.print_grid
     (function None -> " " | Some digit -> string_of_int digit)
     state.current_grid;
@@ -23,6 +40,7 @@ let print_state (state : state) : unit =
   List.iter print_available state.options
   
 let print_fail_state (state : state) : unit =
+  Printf.printf "%s\n" (digest_state state);
   Model.print_grid
     (function None -> " " | Some digit -> string_of_int digit)
     state.current_grid;
@@ -33,10 +51,13 @@ type response = Solved of Model.solution | Unsolved of state | Fail of state
 
 let triangular n = (n * (n+1)) / 2
 
-let rec find_pos n el = function
-  | [] -> -1
-  | h::t when h = el -> n
-  | _::t -> find_pos (n+1) el t
+let find_pos el lst = 
+	let rec aux n el = function
+	  | [] -> -1
+	  | h::t when h = el -> n
+	  | _::t -> aux (n+1) el t
+	in
+	aux 1 el lst
 
 let take n lst = 
   let rec take' n lst acc =
@@ -433,12 +454,13 @@ let[@warning "-8"] is_possible_arrow cx cy state (constr : Model.constr) digit =
   
 let is_possible_thermo cx cy state (constr : Model.constr) digit =
   if not (List.mem (cx, cy) constr.cells) then true else
-  let pos = find_pos 1 (cx, cy) constr.cells in
+  let pos = find_pos (cx, cy) constr.cells in
   let digits = List.map (fun (x, y) -> state.current_grid.(x).(y)) constr.cells in
   let below = take pos digits and
       above = take (List.length digits - pos + 1) (List.rev digits) in
   let low = get_extreme 1 below in
   let high = get_extreme (-1) above in
+  (* if (cx, cy) = debug_cell then Printf.printf "%s is between %d and %d\n" dbs low high; *)
   low <= Option.get digit && Option.get digit <= high
   (* pos <= Option.get digit && Option.get digit <= (9 - (List.length constr.cells - pos)) *)
 
@@ -458,7 +480,8 @@ let is_possible_digit cx cy state (constraints : Model.constr list) digit = (* T
      Array.mem digit (Model.get_column state.current_grid cy) ||
 	 Array.mem digit (Model.get_box state.current_grid (cx/3 * 3 + cy/3)) ||
 	 not (List.for_all (fun x -> is_possible_constr cx cy state x digit) constraints) then 
-	 false else
+	 false
+	 else
 	 true
 
 
@@ -504,8 +527,8 @@ let step_cell state cx cy cell =
   match state.current_grid.(cx).(cy) with
   | Some x -> ()
   | None -> match get_possible state cx cy with
-			| [] -> raise No_Options
-			| [x] -> state.current_grid.(cx).(cy) <- x;
+			| [] -> (* Printf.printf "No options in (%d,%d)\n" cx cy; *) raise No_Options
+			| [x] -> state.current_grid.(cx).(cy) <- x
 			| _ -> () (* TODO: MULTIPLE OPTIONS *)
 
 
@@ -536,34 +559,36 @@ let[@warning "-8"] branch_state (state : state) : (state * state) option =  (* T
 
 let compare_grid state = 
   let solution = [|
-    [| 2;6;9;3;4;1;8;7;5 |];
-    [| 5;7;1;6;2;8;3;9;4 |];
-    [| 4;8;3;9;7;5;2;6;1 |];
-    [| 1;3;6;4;8;7;9;5;2 |];
-    [| 9;4;5;2;1;6;7;3;8 |];
-    [| 8;2;7;5;9;3;4;1;6 |];
-    [| 3;1;4;8;6;9;5;2;7 |];
-    [| 6;9;2;7;5;4;1;8;3 |];
-    [| 7;5;8;1;3;2;6;4;9 |];
+    [| 4;6;7;8;1;3;5;9;2 |];
+    [| 3;8;5;7;2;9;1;6;4 |];
+    [| 1;2;9;4;5;6;7;3;8 |];
+    [| 7;1;6;5;3;8;2;4;9 |];
+    [| 8;9;4;2;6;1;3;5;7 |];
+    [| 2;5;3;9;4;7;8;1;6 |];
+    [| 6;4;8;3;7;5;9;2;1 |];
+    [| 5;7;2;1;9;4;6;8;3 |];
+    [| 9;3;1;6;8;2;4;7;5 |];
     |] in
+  if List.exists (fun x -> x.loc = debug_cell && x.possible = []) state.options then
   if Array.for_all2 (fun sol cur ->
     Array.for_all2 (fun s c ->
 	  match c with
 	  | None -> true
 	  | Some x -> s = x
 	) sol cur
-  ) solution state.current_grid then print_fail_state state
+  ) solution state.current_grid then (Printf.printf "Incorrectly rejected-------\n";print_fail_state state)
 
 
 (* pogledamo, če trenutno stanje vodi do rešitve *)
 let rec solve_state (state : state) =
-  (* print_state state; *)
+  (* Printf.printf "Pre-cleaning:\n";
+  print_state state; *)
   (* uveljavimo trenutne omejitve in pogledamo, kam smo prišli *)
   let pass = 
     try
 	  Some (Model.mapi_grid (step_cell state) state.current_grid)
     with
-      No_Options -> compare_grid state; None
+      No_Options -> (* Printf.printf "No options detected\n"; *) compare_grid state; None
   in
   if pass = None then None else
 
@@ -577,7 +602,8 @@ let rec solve_state (state : state) =
   in
   (* let state = clean_pps state in *) (* SLOWS DOWN ON AVERAGE *)
   (* let state = fix_pokies state in *)
-  (* print_state state; *)
+  (* Printf.printf "Post-cleaning:\n";
+  print_state state; *)
   (* TODO: na tej točki je stanje smiselno počistiti in zožiti možne rešitve *)
   match validate_state state with
   | Solved solution ->
