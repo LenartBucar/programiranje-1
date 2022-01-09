@@ -39,6 +39,7 @@ let find_solutions (problems : Model.problem list) =
   Printf.printf "Čas reševanja: %f s.\n%!" elapsed_time
 
 let () =
+  let individual = false in (* Whether to solve and time each sudoku individually (true) or all at once (false) *)
   (* Če se program sesuje, nam to izpiše klicni sklad. *)
   Printexc.record_backtrace true;
   (* Tabela sistemskih argumentov vsebuje ime klicanega programa ter argumente, ki mu sledijo *)
@@ -50,8 +51,7 @@ let () =
   (* Iz vsake datoteke preberemo problem *)
   |> List.map read_problem
   (* Probleme zaporedoma rešimo *)
-  |> List.iter find_and_display_solution (* Solve each sudoku individually *)
-  (* |> find_solutions *) (* Solve and time all sudokus at once *)
+  |> if individual then List.iter find_and_display_solution else find_solutions
 
 (* Če domačo nalogo rešujete prek spletnega vmesnika, ki ne podpira branja datotek,
    lahko delovanje preizkušate prek spodnjega programa. *)
