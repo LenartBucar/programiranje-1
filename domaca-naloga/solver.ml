@@ -92,7 +92,8 @@ let remove_candidates remove available =
 (* VVVV n-tuple check VVVV *)
 
 let find_tuple (options : available list) opt =
-  let same, diff = List.partition (fun x -> x.possible = opt.possible) options in
+  (* let same, diff = List.partition (fun x -> x.possible = opt.possible) options in *)
+  let same, diff = List.partition (fun x -> List.for_all (fun m -> List.mem m opt.possible) x.possible) options in
   if List.length same = List.length opt.possible then
     let diff = List.map (remove_candidates opt.possible) diff in
   same @ diff
@@ -216,6 +217,40 @@ let find_hidden_singles state =
 
 (* ^^^^ hidden singles check ^^^^ *)
 
+let precompute_sum = function (* all possible digits for a cage of a given length with a given sum *)
+  | (2, 3) -> [1;2]
+  | (2, 4) -> [1;3]
+  | (2, 5) -> [1;2;3;4]
+  | (2, 6) -> [1;2;4;5]
+  | (2, 7) -> [1;2;3;4;5;6]
+  | (2, 8) -> [1;2;3;5;6;7]
+  | (2, 9) -> [1;2;3;4;5;6;7;8]
+  | (2, 10) -> [1;2;3;4;6;7;8;9]
+  | (2, 11) -> [2;3;4;5;6;7;8;9]
+  | (2, 12) -> [3;4;5;7;8;9]
+  | (2, 13) -> [4;5;6;7;8;9]
+  | (2, 14) -> [5;6;8;9]
+  | (2, 15) -> [6;7;8;9]
+  | (2, 16) -> [7;9]
+  | (2, 17) -> [8;9]
+  | (3, 6) -> [1;2;3]
+  | (3, 7) -> [1;2;4]
+  | (3, 8) -> [1;2;3;4;5]
+  | (3, 22) -> [5;6;7;8;9]
+  | (3, 23) -> [6;8;9]
+  | (3, 24) -> [7;8;9]
+  | (4, 10) -> [1;2;3;4]
+  | (4, 11) -> [1;2;3;5]
+  | (4, 12) -> [1;2;3;4;5;6]
+  | (4, 28) -> [4;5;6;7;8;9]
+  | (4, 29) -> [5;7;8;9]
+  | (4, 30) -> [6;7;8;9]
+  | (5, 15) -> [1;2;3;4;5]
+  | (5, 16) -> [1;2;3;4;6]
+  | (5, 34) -> [4;6;7;8;9]
+  | (5, 35) -> [5;6;7;8;9]
+  | _ -> [1;2;3;4;5;6;7;8;9]
+
 (* VVVV Innie / Outie check VVVV *)
 (* ---------------- UNUSED VVVV
 let get_cages_row (constraints : Model.constr list) row =
@@ -338,15 +373,15 @@ let check_arrow_head state (arrow : Model.constr) digit =
   
 let check_arrow_tail state (arrow : Model.constr) loc digit =
   let[@warning "-8"] head::tail = arrow.cells in
-  let h = match state.current_grid.(fst head).(snd head) with
-  | Some x -> x
-  | None -> let[@warning "-8"] [opts] = (List.filter (fun o -> o.loc = head) state.options) in
-			let opts = Model.unoption opts.possible in 
-			List.fold_left max (List.hd opts) opts
-  in
   let fixed = get_digits state.current_grid {arrow with cells = tail} in
   let fixed_sum = sum fixed in
-  h >= Option.get digit + fixed_sum + (List.length tail - List.length fixed) - 1
+  let h, possible = match state.current_grid.(fst head).(snd head) with
+  | Some x -> x, List.mem (Option.get digit) (precompute_sum ((List.length tail - List.length fixed), x - fixed_sum))
+  | None -> let[@warning "-8"] [opts] = (List.filter (fun o -> o.loc = head) state.options) in
+			let opts = Model.unoption opts.possible in 
+			(List.fold_left max (List.hd opts) opts), true
+  in
+  possible && h >= Option.get digit + fixed_sum + (List.length tail - List.length fixed) - 1
 
 
 let check_arrow state (arrow : Model.constr) =
@@ -374,51 +409,20 @@ let rec get_extreme delta = function
 
 (* VVVV Constraint filtering VVVV *)
 
-let precompute_cage = function (* all possible digits for a cage of a given length with a given sum *)
-  | (2, 3) -> [1;2]
-  | (2, 4) -> [1;3]
-  | (2, 5) -> [1;2;3;4]
-  | (2, 6) -> [1;2;4;5]
-  | (2, 7) -> [1;2;3;4;5;6]
-  | (2, 8) -> [1;2;3;5;6;7]
-  | (2, 9) -> [1;2;3;4;5;6;7;8]
-  | (2, 10) -> [1;2;3;4;6;7;8;9]
-  | (2, 11) -> [2;3;4;5;6;7;8;9]
-  | (2, 12) -> [3;4;5;7;8;9]
-  | (2, 13) -> [4;5;6;7;8;9]
-  | (2, 14) -> [5;6;8;9]
-  | (2, 15) -> [6;7;8;9]
-  | (2, 16) -> [7;9]
-  | (2, 17) -> [8;9]
-  | (3, 6) -> [1;2;3]
-  | (3, 7) -> [1;2;4]
-  | (3, 8) -> [1;2;3;4;5]
-  | (3, 22) -> [5;6;7;8;9]
-  | (3, 23) -> [6;8;9]
-  | (3, 24) -> [7;8;9]
-  | (4, 10) -> [1;2;3;4]
-  | (4, 11) -> [1;2;3;5]
-  | (4, 12) -> [1;2;3;4;5;6]
-  | (4, 28) -> [4;5;6;7;8;9]
-  | (4, 29) -> [5;7;8;9]
-  | (4, 30) -> [6;7;8;9]
-  | (5, 15) -> [1;2;3;4;5]
-  | (5, 16) -> [1;2;3;4;6]
-  | (5, 34) -> [4;6;7;8;9]
-  | (5, 35) -> [5;6;7;8;9]
-  | _ -> [1;2;3;4;5;6;7;8;9]
-
 let is_possible_cage cx cy state (constr : Model.constr) digit = (* make cages work *)
   if not (List.mem (cx, cy) constr.cells) then true else
   let num = (List.length constr.cells) - 1 in
   (* Printf.printf "Cell (%d,%d) - cage size %d, cage value %d. Max digit: %d\n" cx cy (num + 1) constr.value (constr.value - triangular num); *)
-  let below_max = (constr.value - triangular num) >= Option.get digit in
+  
   let already_filled = get_digits state.current_grid constr in
   if List.length already_filled = num then 
     (Option.get digit = constr.value - (sum already_filled))
   else
+  let num = num - List.length already_filled and
+      value = constr.value - (sum already_filled) in
+  let below_max = (value - triangular num) >= Option.get digit in
   let already_in_cage = List.mem (Option.get digit) already_filled in
-  let options = precompute_cage (num+1, constr.value) in
+  let options = precompute_sum (num+1, value) in
   List.mem (Option.get digit) options && not already_in_cage && below_max
   
 let[@warning "-8"] is_possible_arrow cx cy state (constr : Model.constr) digit =
