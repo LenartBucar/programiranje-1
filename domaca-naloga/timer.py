@@ -1,5 +1,6 @@
 import subprocess
 import re
+import argparse
 
 def get_time(output):
     ptrn = re.compile(r"(\d+\.\d+) s\.")
@@ -16,9 +17,8 @@ def repeat(command, num):
     return sum(times) / num, min(times), max(times)
 
 if __name__ == "__main__":
-    # sudoku = r"sudokuji\newman\whats_in_the_box.sdk"
-    sudokus = [r"sudokuji\horjak\obicajni-*.sdk"]
-    # sudokus = [r"sudokuji\horjak\obicajni-*.sdk", r"sudokuji\horjak\puscice-*.sdk", r"sudokuji\horjak\termometri-*.sdk", r"sudokuji\horjak\*.sdk"]
-    # sudokus = [r"sudokuji\horjak\puscice-*.sdk"]
-    for sudoku in sudokus:
-        print(sudoku, repeat(["sudoku.exe", sudoku], 100))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file")
+    parser.add_argument("-n", "--repeats", type=int, default=100)
+    args = parser.parse_args()
+    print(f"Solving {args.file} over {args.repeats} repeats (avg, best, worst): {repeat(['sudoku.exe', args.file], args.repeats)}")
