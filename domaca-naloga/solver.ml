@@ -584,10 +584,6 @@ let rec solve_state (state : state) =
       No_Options -> (* compare_grid state; *) None  (* If a correct grid is rejected, print out the state *)
   in
   if pass = None then None else
-
-  (* let state = filter_state state in
-  let state = find_hidden_singles state in
-  let state = clean_tuples state in *)
   let state = state 
     |> filter_state 
 	|> find_hidden_singles 
@@ -595,7 +591,6 @@ let rec solve_state (state : state) =
 	(* |> clean_pps *) (* SLOWS DOWN ON AVERAGE *)
 	(* |> fix_pokies *) (* SLOWS DOWN ON AVERAGE *)
   in
-  (* TODO: na tej točki je stanje smiselno počistiti in zožiti možne rešitve *)
   match validate_state state with
   | Solved solution ->
       (* če smo našli rešitev, končamo *)
